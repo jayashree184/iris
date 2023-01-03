@@ -1,0 +1,43 @@
+from sklearn import datasets
+import pandas as pd
+import numpy as np
+iris=datasets.load_iris()
+
+iris.keys()
+
+iris=pd.DataFrame(data=np.c_[iris['data'],iris['target']],
+                 columns=iris['feature_names']+['target'])
+iris.head(10)
+
+species=[]
+
+for i in range(len(iris['target'])):
+    if iris['target'][i]==0:
+        species.append("setosa")
+    elif iris['target'][i]==1:
+        species.append("versicolor")
+    else:
+        species.append("virginica")
+        
+        
+iris['species']=species
+
+iris.groupby('species').size()
+
+iris.describe()
+
+import matplotlib.pyplot as plt
+setosa=iris[iris.species=="setosa"]
+versicolor=iris[iris.species=="versicolor"]
+virginica=iris[iris.species=="virginica"]
+fig,ax=plt.subplots()
+fig.set_size_inches(13,7)
+ax.scatter(setosa['petal length (cm)'],setosa['petal width (cm)'],label="Setosa",facecolor="blue")
+ax.scatter(versicolor['petal length (cm)'],versicolor['petal width (cm)'],label="versicolor",facecolor="green")
+ax.scatter(virginica['petal length (cm)'],virginica['petal width (cm)'],label="virginica",facecolor="red")
+ax.set_xlabel("Petal length (cm)")
+ax.set_ylabel("Petal width (cm)")
+ax.grid()
+ax.set_title("Iris petals")
+ax.legend()
+
